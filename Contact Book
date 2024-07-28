@@ -1,0 +1,134 @@
+# Define a global dictionary to store contacts
+contacts = []
+
+# Function to add a new contact
+def add_contact():
+    print("\nEnter contact details:")
+    name = input("Name: ")
+    phone = input("Phone Number: ")
+    email = input("Email: ")
+    address = input("Address: ")
+    
+    contact = {
+        'name': name,
+        'phone': phone,
+        'email': email,
+        'address': address
+    }
+    
+    contacts.append(contact)
+    print(f"\nContact {name} added successfully!\n")
+
+# Function to view all contacts
+def view_contacts():
+    if not contacts:
+        print("\nNo contacts found.\n")
+    else:
+        print("\n--- Contact List ---")
+        for idx, contact in enumerate(contacts, start=1):
+            print(f"{idx}. Name: {contact['name']}, Phone: {contact['phone']}")
+        print()
+
+# Function to search for a contact by name or phone number
+def search_contact():
+    if not contacts:
+        print("\nNo contacts found.\n")
+        return
+    
+    search_term = input("\nEnter name or phone number to search: ").lower()
+    found_contacts = []
+    
+    for contact in contacts:
+        if search_term in contact['name'].lower() or search_term in contact['phone']:
+            found_contacts.append(contact)
+    
+    if not found_contacts:
+        print("\nNo matching contacts found.\n")
+    else:
+        print("\n--- Search Results ---")
+        for idx, contact in enumerate(found_contacts, start=1):
+            print(f"{idx}. Name: {contact['name']}, Phone: {contact['phone']}, Email: {contact['email']}, Address: {contact['address']}")
+        print()
+
+# Function to update a contact
+def update_contact():
+    if not contacts:
+        print("\nNo contacts found.\n")
+        return
+    
+    name = input("\nEnter the name of the contact to update: ")
+    found = False
+    
+    for contact in contacts:
+        if contact['name'].lower() == name.lower():
+            found = True
+            print("\nCurrent Details:")
+            print(f"Name: {contact['name']}, Phone: {contact['phone']}, Email: {contact['email']}, Address: {contact['address']}")
+            
+            print("\nEnter new details (leave blank to keep current):")
+            new_phone = input(f"New Phone Number ({contact['phone']}): ") or contact['phone']
+            new_email = input(f"New Email ({contact['email']}): ") or contact['email']
+            new_address = input(f"New Address ({contact['address']}): ") or contact['address']
+            
+            contact.update({
+                'phone': new_phone,
+                'email': new_email,
+                'address': new_address
+            })
+            
+            print(f"\nContact {name} updated successfully!\n")
+            break
+    
+    if not found:
+        print(f"\nContact {name} not found.\n")
+
+# Function to delete a contact
+def delete_contact():
+    if not contacts:
+        print("\nNo contacts found.\n")
+        return
+    
+    name = input("\nEnter the name of the contact to delete: ")
+    found = False
+    
+    for contact in contacts[:]:
+        if contact['name'].lower() == name.lower():
+            found = True
+            contacts.remove(contact)
+            print(f"\nContact {name} deleted successfully!\n")
+    
+    if not found:
+        print(f"\nContact {name} not found.\n")
+
+# Function to display the main menu
+def main_menu():
+    while True:
+        print("===== Contact Book Menu =====")
+        print("1. Add Contact")
+        print("2. View Contacts")
+        print("3. Search Contact")
+        print("4. Update Contact")
+        print("5. Delete Contact")
+        print("6. Exit")
+        
+        choice = input("\nEnter your choice (1-6): ")
+        
+        if choice == '1':
+            add_contact()
+        elif choice == '2':
+            view_contacts()
+        elif choice == '3':
+            search_contact()
+        elif choice == '4':
+            update_contact()
+        elif choice == '5':
+            delete_contact()
+        elif choice == '6':
+            print("\nThank you for using the Contact Book. Goodbye!\n")
+            break
+        else:
+            print("\nInvalid choice. Please enter a number from 1 to 6.\n")
+
+# Start the application
+if __name__ == "__main__":
+    main_menu()
